@@ -1,3 +1,7 @@
+## Current redesign
+
+The current website uses white, charcoal and cobalt blue to follow the approved logo. It has a typography-led hero with the original orb artwork, a four-column GPU comparison (two columns on tablets, one on phones), expandable service rows, a numbered process section and a grouped quote form. Navigation/footer use a compact horizontal arrangement of the original PNG symbol and original wordmark via CSS display crops. The original file is unchanged. Earlier sections below document delivery history.
+
 ## Approved logo update
 
 The user-approved PNG is `src/assets/dataorb-cloud-final.png`, copied byte-for-byte from the supplied original. It replaces the temporary branding in navigation and footer. CSS trims the displayed whitespace without changing or regenerating the image. The favicon is an SVG viewport around the original raster orb; it contains a PNG and is **not vector artwork**. Previous concept studies are archived, not the current identity. The company footer retains Dataorb Cloud LLC.

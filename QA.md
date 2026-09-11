@@ -30,3 +30,18 @@ No real mail/CRM/backend integration exists and no real receipt or deliverabilit
 ## Approved logo update
 
 Replaced the navigation/footer temporary wordmarks with the exact supplied PNG, displayed through CSS whitespace cropping. The favicon frames the raster orb and does not claim vector geometry. Original PNG preserved byte-for-byte. Historical concepts are labeled archived. Legal footer remains Dataorb Cloud LLC.
+
+## Full visual redesign — September 10, 2026
+
+- Replaced all main-page layouts and styles with the approved logo's black/white/blue direction; removed the old flowchart and service-card grid.
+- Visually reviewed desktop hero, GPU comparison, service accordion and form, plus mobile hero and completed request draft.
+- Verified no document overflow at 320, 390, 768, 1024 and 1440 px. The intentionally clipped source PNG extends beyond its CSS viewing window; it does not create page overflow.
+- Confirmed all brand image resources loaded and no console warnings/errors were captured.
+- Opened the deployment service disclosure; its content became visible.
+- Tested mobile menu opening, navigation and auto-close.
+- Tested B300 inquiry prefilling, empty required fields with first-error focus, invalid email and zero quantity.
+- Prepared a valid eight-GPU B300 inference request, verified the draft values and NOT SUBMITTED status, and invoked its text download.
+- Rechecked local resources, unique IDs, anchor targets, form labels, one H1, legal company name, JavaScript syntax and Git whitespace.
+- Fixed missing spaces at responsive line breaks and tightened mobile hero action spacing after visual review.
+
+The form backend remains unconnected and explicitly disclosed. This redesign does not change inventory, pricing, delivery or service claims. Native-device and formal accessibility audits remain outside these checks.
