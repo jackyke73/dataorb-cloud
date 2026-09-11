@@ -9,7 +9,7 @@
 :root {
   --ink: #0f1620;
   --body: #46505e;
-  --muted: #6b7684;
+  --muted: #5c6775;
   --line: #d8dde3;
   --line-soft: #e6eaee;
   --line-strong: #b9c1ca;
@@ -37,6 +37,8 @@ button:disabled { cursor: wait; opacity: .6; }
 button, a, input, select, textarea, summary { -webkit-tap-highlight-color: transparent; }
 a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 ::selection { background: #d6e3f5; color: var(--ink); }
+/* --accent is 2.16:1 on --ink, so dark surfaces need their own focus colour. */
+footer :focus-visible, .utility-bar :focus-visible, .capability-band :focus-visible { outline-color: #fff; }
 h1, h2, h3, h4, p, figure, dl, dd { margin: 0; }
 h1, h2, h3, h4 { color: var(--ink); font-weight: 600; letter-spacing: -.015em; line-height: 1.2; }
 ul { margin: 0; padding: 0; list-style: none; }
@@ -79,7 +81,8 @@ table { border-collapse: collapse; }
 .brand-type img { position: absolute; width: 200.6px; height: 200.6px; max-width: none; left: -20.8px; top: -113.6px; }
 
 #primary-nav { display: flex; align-items: center; gap: 30px; }
-#primary-nav a { font-size: .875rem; font-weight: 500; color: var(--ink); white-space: nowrap; }
+#primary-nav a { font-size: .875rem; font-weight: 500; white-space: nowrap; }
+#primary-nav a:not(.button) { color: var(--ink); }   /* must not override .button-accent's white */
 #primary-nav a:not(.button):hover { color: var(--accent); }
 #primary-nav .button { margin-left: 6px; }
 .menu-toggle { display: none; align-items: center; gap: 8px; min-height: 38px; padding: 8px 14px; background: #fff; border: 1px solid var(--line-strong); border-radius: 2px; color: var(--ink); font-size: .8125rem; font-weight: 600; }
@@ -143,7 +146,8 @@ table { border-collapse: collapse; }
 
 .table-footnote { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 32px; align-items: start; margin-top: 18px; }
 .table-footnote p { color: var(--muted); font-size: .8125rem; max-width: 78ch; }
-.sources summary { color: var(--ink); font-size: .8125rem; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.sources summary { display: list-item; list-style: none; color: var(--ink); font-size: .8125rem; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.sources .faq-mark { margin-left: 8px; font-size: 1rem; }
 .sources summary:hover { color: var(--accent); }
 .sources > div { display: grid; gap: 8px; justify-items: start; margin-top: 12px; padding: 14px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 2px; }
 .sources p { color: var(--muted); font-size: .8125rem; max-width: 62ch; }
@@ -199,6 +203,8 @@ table { border-collapse: collapse; }
 .error { color: #b3261e; font-size: .75rem; line-height: 1.4; }
 .error:empty { display: none; }
 .hint { color: var(--muted); font-size: .75rem; line-height: 1.45; }
+.field-notice { grid-column: 1 / -1; margin: -4px 0 0; color: var(--accent); font-size: .8125rem; line-height: 1.5; }
+.field-notice:empty { display: none; }
 
 .privacy-note { margin-top: 20px; color: var(--muted); font-size: .75rem; line-height: 1.55; }
 .privacy-note a { color: var(--accent); }
@@ -218,7 +224,7 @@ footer { background: var(--ink); color: #9aa6b4; padding-block: 52px 0; }
 .footer-col h2 { color: #fff; font-size: .6875rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
 .footer-col a { color: #9aa6b4; font-size: .8125rem; }
 .footer-col a:hover { color: #fff; }
-.footer-bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding-block: 18px 22px; border-top: 1px solid rgba(255,255,255,.13); color: #6b7684; font-size: .75rem; }
+.footer-bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding-block: 18px 22px; border-top: 1px solid rgba(255,255,255,.13); color: #8590a0; font-size: .75rem; }
 .footer-bottom a:hover { color: #fff; }
 
 /* Dedicated clusters ------------------------------------------------------ */
@@ -230,8 +236,12 @@ footer { background: var(--ink); color: #9aa6b4; padding-block: 52px 0; }
 /* FAQ --------------------------------------------------------------------- */
 .faq-list { border: 1px solid var(--line); border-radius: 2px; background: var(--paper); }
 .faq-item + .faq-item { border-top: 1px solid var(--line-soft); }
-.faq-item summary { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; padding: 16px 20px; color: var(--ink); font-size: .9375rem; font-weight: 600; line-height: 1.45; cursor: pointer; list-style: none; }
-.faq-item summary::-webkit-details-marker { display: none; }
+/* Keep the native display:list-item on <summary>; changing it to flex is known to
+   drop the disclosure mapping in Safari/VoiceOver. Layout lives on .faq-row. */
+.faq-item summary { display: list-item; padding: 16px 20px; cursor: pointer; list-style: none; }
+.faq-item summary::-webkit-details-marker, .sources summary::-webkit-details-marker { display: none; }
+.faq-item summary::marker, .sources summary::marker { content: ""; }
+.faq-row { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; color: var(--ink); font-size: .9375rem; font-weight: 600; line-height: 1.45; }
 .faq-mark { flex-shrink: 0; color: var(--body); font-size: 1.125rem; font-weight: 400; line-height: 1; }
 .faq-mark::after { content: "+"; }
 .faq-item summary:hover, .faq-item[open] summary { background: var(--surface); }
@@ -287,6 +297,8 @@ footer { background: var(--ink); color: #9aa6b4; padding-block: 52px 0; }
 
 @media (max-width: 760px) {
   .spec-table thead { display: none; }
+  /* Explicit role attributes in the markup keep the table semantics that
+     display:block would otherwise strip. */
   .spec-table, .spec-table tbody, .spec-table tr, .spec-table tbody th, .spec-table tbody td { display: block; width: 100%; }
   .table-wrap { overflow-x: visible; border: 0; }
   .spec-table tr { border: 1px solid var(--line); border-radius: 2px; margin-bottom: 10px; }
