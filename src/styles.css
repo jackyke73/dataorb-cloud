@@ -9,3 +9,6 @@
 
 /* Readable labels and primary copy at every breakpoint. */
 .field label{font-size:14px}.service-card p,.process-grid p{font-size:16px}.privacy-note{font-size:12px}.map-top{align-items:start}.map-top span:last-child{white-space:nowrap}.hero-actions{flex-wrap:wrap}.gpu-row p{font-size:16px}
+
+/* Display the approved PNG unchanged, cropping only its surrounding whitespace. */
+.wordmark{display:block;flex-shrink:0}.logo-window{display:block;position:relative;overflow:hidden;width:190px;height:80px}.logo-window img{position:absolute;max-width:none;width:241px;height:241px;left:-25px;top:-72px}.footer-top .logo-window{width:238px;height:100px}.footer-top .logo-window img{width:301px;height:301px;left:-32px;top:-90px}@media(max-width:800px){.nav-shell{min-height:88px}.logo-window{width:170px;height:72px}.logo-window img{width:217px;height:217px;left:-23px;top:-65px}}

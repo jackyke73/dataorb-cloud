@@ -26,3 +26,7 @@ The preview is noindex; canonical and sitemap origin await the final domain. No 
 ## Limits
 
 No real mail/CRM/backend integration exists and no real receipt or deliverability test is possible yet. Browser testing used the Codex browser with viewport overrides, not physical iOS/Android devices or every browser engine. This was a practical accessibility and interaction review, not a formal WCAG conformance audit. Logos are concept studies with editable text; final letter outlines and optical refinement follow direction selection.
+
+## Approved logo update
+
+Replaced the navigation/footer temporary wordmarks with the exact supplied PNG, displayed through CSS whitespace cropping. The favicon frames the raster orb and does not claim vector geometry. Original PNG preserved byte-for-byte. Historical concepts are labeled archived. Legal footer remains Dataorb Cloud LLC.

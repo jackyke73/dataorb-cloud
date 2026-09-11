@@ -1,3 +1,7 @@
+## Approved logo update
+
+The user-approved PNG is `src/assets/dataorb-cloud-final.png`, copied byte-for-byte from the supplied original. It replaces the temporary branding in navigation and footer. CSS trims the displayed whitespace without changing or regenerating the image. The favicon is an SVG viewport around the original raster orb; it contains a PNG and is **not vector artwork**. Previous concept studies are archived, not the current identity. The company footer retains Dataorb Cloud LLC.
+
 # Dataorb Cloud
 
 Responsive English website for **Dataorb Cloud LLC**, displaying **Dataorb Cloud** in navigation and the temporary wordmark. Built in this directory with semantic HTML, CSS and browser JavaScript, using a dependency-free Node build and preview server. No framework or package installation is required. Inter is self-hosted under its included SIL Open Font License.
