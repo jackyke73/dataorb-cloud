@@ -1,6 +1,6 @@
 ## Current redesign
 
-The current website uses white, charcoal and cobalt blue to follow the approved logo. It has a typography-led hero with the original orb artwork, a four-column GPU comparison (two columns on tablets, one on phones), expandable service rows, a numbered process section and a grouped quote form. Navigation/footer use a compact horizontal arrangement of the original PNG symbol and original wordmark via CSS display crops. The original file is unchanged. Earlier sections below document delivery history.
+The current website follows an enterprise infrastructure direction: a light, dense, table-led layout in white, steel and a single deep blue accent, with no photography. It has a dark utility bar, a compact sticky header, a typographic hero paired with an "engagement at a glance" specification panel, a dark capability band, a sortable-width NVIDIA GPU reference table (stacking to labelled rows under 760 px), a three-column services block, a four-column process table, an explicit scope-and-limitations block and a grouped quote form. Navigation and footer use a compact horizontal arrangement of the original PNG symbol and wordmark via CSS display crops; the footer places the unmodified logo on a white plate rather than recoloring it. The original file is unchanged. Earlier sections below document delivery history.
 
 ## Approved logo update
 
