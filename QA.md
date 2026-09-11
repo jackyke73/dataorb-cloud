@@ -45,3 +45,10 @@ Replaced the navigation/footer temporary wordmarks with the exact supplied PNG, 
 - Fixed missing spaces at responsive line breaks and tightened mobile hero action spacing after visual review.
 
 The form backend remains unconnected and explicitly disclosed. This redesign does not change inventory, pricing, delivery or service claims. Native-device and formal accessibility audits remain outside these checks.
+
+## Research-led infrastructure theme — September 10, 2026
+- Visually reviewed AWS, Azure, Google Cloud, Equinix, Digital Realty and CoreWeave official homepages. See DESIGN-RESEARCH.md for observations and implementation mapping.
+- Replaced oversized logo hero with original conceptual architecture SVG; approved PNG navigation/footer logo preserved.
+- Midnight/navy compute sections, ice-blue type, cyan architectural accents, cool light reading/form surfaces.
+- Built successfully with the existing static build; no added dependencies or form logic changes.
+- Desktop 1440px and mobile 390px preview inspected; no document horizontal overflow. Mobile navigation opened/closed correctly, B200 quote link selected B200, empty request highlighted six remaining required fields and explicitly stated nothing was sent.

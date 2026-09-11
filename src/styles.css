@@ -361,3 +361,61 @@ footer { border-top: 1px solid var(--line); padding: 52px 0 24px; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
+
+/* Research-led infrastructure theme: midnight surfaces, architectural geometry,
+   clear product hierarchy. Original approved raster logo remains on white. */
+:root { --ink:#101c2c; --muted:#5b6879; --blue:#315cef; --line:#d8e1eb; --soft:#eff4f8; }
+.site-header { border-bottom:0; }
+.nav-shell { height:78px; }
+.button { border-radius:3px; }
+.hero { color:#f4f8ff; background:radial-gradient(ellipse at 85% 45%,#122e50 0,transparent 48%),#070f1c; overflow:hidden; padding-top:33px; }
+.hero .eyebrow { color:#71dfd8; }
+.hero-kicker { padding-bottom:22px; border-bottom:1px solid #25364a; }
+.hero-kicker > span { color:#95a9c1; }
+.hero-layout { grid-template-columns:1.1fr 1fr; padding:68px 0 70px; gap:30px; }
+.hero h1 { font-size:clamp(3.7rem,5.5vw,5.4rem); line-height:1.06; letter-spacing:-.065em; }
+.hero h1 span { color:#91b8ff; }
+.hero-description { color:#aabbd0; font-size:1.0625rem; max-width:485px; }
+.hero .button-blue { background:#4668f5; }
+.hero .button-blue:hover { background:#5a79ff; }
+.hero .text-link { color:#e7efff; }
+.compute-visual { min-width:0; width:100%; position:relative; }
+.visual-top { display:flex; justify-content:space-between; color:#83a3c8; font-size:.625rem; letter-spacing:.09em; padding:0 15px; }
+.compute-visual svg { width:100%; height:auto; display:block; overflow:visible; margin:12px 0 18px; }
+.compute-visual figcaption { display:flex; flex-direction:column; align-items:center; gap:6px; color:#829bb8; font-size:.75rem; }
+.compute-visual figcaption .mono { color:#bdd0e7; font-size:.625rem; letter-spacing:.1em; }
+.hero-bottom { border-color:#25364a; }
+.hero-bottom p,.workloads { color:#91a7c1; }
+.workloads span::before { content:'+'; margin-right:9px; color:#6ce0d8; }
+.explore-down { border-color:#33465f; color:#a4bdd8; }
+.explore-down:hover { background:#19314c; }
+.gpu-section { background:#0b1524; padding:73px 0 48px; border-top:1px solid #25364a; }
+.gpu-section .eyebrow { color:#70d9d4; }
+.gpu-heading { margin:35px 0 42px; }
+.gpu-heading h2 { font-size:clamp(2.8rem,4vw,4rem); }
+.gpu-heading h2 span { color:#9eb0c8; }
+.gpu-grid { gap:16px; border:0; border-radius:0; }
+.gpu-card,.gpu-card + .gpu-card { background:linear-gradient(145deg,#15263d,#101d30); border:1px solid #2b405a; border-radius:4px; padding-inline:23px; position:relative; }
+.gpu-card::before { content:''; height:2px; position:absolute; top:-1px; left:23px; right:23px; background:linear-gradient(90deg,#497ef6,#6edfd7); }
+.gpu-card:hover,.gpu-card:focus-within { background:#1a304c; border-color:#698cac; }
+.gpu-card-meta .mono,.gpu-link span { color:#7bded9; }
+.gpu-card h3 { font-size:3.4rem; margin-top:30px; }
+.gpu-memory,.gpu-link { border-color:#30435b; }
+.gpu-memory strong { color:#c1d7ff; }
+.services { background:#f9fbfd; }
+.service-list { border-top-color:#b6c7d9; }
+.service-number { color:#315cef; }
+.service-item[open] h3 { color:#315cef; }
+.process-section { background:#eaf0f6; border-block:1px solid #d5e0ec; }
+.step-number { color:#637e9f; font:400 2.7rem/1 'SFMono-Regular',Consolas,monospace; letter-spacing:-.07em; }
+.step-line { border-color:#bccbdb; }
+.quote-section { background:#f9fbfd; }
+.form-panel { background:#fff; border-color:#d3dfeb; box-shadow:0 20px 60px #16375a08; border-radius:5px; }
+.form-notice { background:#edf3fa; color:#53677d; border-left:2px solid #6d91be; border-radius:0; }
+.form-notice strong { color:#29435f; }
+input,select,textarea { background:#f8fafc; border-color:#c8d5e3; }
+footer { background:white; }
+@media(max-width:1150px) { .hero h1 { font-size:5.6vw; } .gpu-card { padding-inline:20px; } }
+@media(max-width:900px) { .gpu-card:nth-child(n+3) { border:1px solid #2b405a; } }
+@media(max-width:800px) { .hero-layout { grid-template-columns:1fr; padding:45px 0 35px; } .hero h1 { font-size:clamp(3.4rem,9vw,5rem); max-width:650px; } .compute-visual { max-width:460px; margin:14px auto 0; } .compute-visual svg { margin-block:0 12px; } .hero-kicker { padding-bottom:18px; } .gpu-section { padding-top:48px; } }
+@media(max-width:550px) { .hero h1 { font-size:clamp(2.8rem,10.5vw,3.7rem); } .hero-layout { gap:30px; padding-top:34px; } .hero-description { font-size:1rem; } .compute-visual { max-width:370px; } .hero-bottom { gap:12px; } .gpu-heading h2 br { display:initial; } .gpu-heading h2 { font-size:2.9rem; } .gpu-card + .gpu-card { border:1px solid #2b405a; } .gpu-grid { gap:18px; } }
