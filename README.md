@@ -1,6 +1,6 @@
 ## Current redesign
 
-The current website follows an enterprise infrastructure direction: a light, dense, table-led layout in white, steel and a single deep blue accent, with no photography. It has a dark utility bar, a compact sticky header, a typographic hero paired with an "engagement at a glance" specification panel, a dark capability band, an NVIDIA GPU reference table (stacking to labelled rows under 760 px), a three-column services block, a dedicated GPU cluster block, a four-column process table, an explicit scope-and-limitations block, a disclosure-based FAQ and a grouped quote form. Navigation and footer use a compact horizontal arrangement of the original PNG symbol and wordmark via CSS display crops; the footer places the unmodified logo on a white plate rather than recoloring it. The original file is unchanged. Earlier sections below document delivery history.
+The current website follows an enterprise infrastructure direction: a light, dense, table-led layout in white, steel and a single deep blue accent, with no photography. It has a dark utility bar, a compact sticky header, a typographic hero paired with an "engagement at a glance" specification panel, a dark capability band, an NVIDIA GPU reference table (stacking to labelled rows under 760 px), a three-column services block, a dedicated GPU cluster block, a four-column process table, an explicit scope-and-limitations block, a disclosure-based FAQ and a grouped quote form. Navigation and footer use a compact horizontal arrangement of the original PNG symbol and wordmark via CSS display crops; the footer places the unmodified logo on a white plate rather than recoloring it. The approved artwork is unchanged and preserved byte-identical in `brand-source/`; `src/assets/` ships a downscaled, artifact-cleaned display copy of the same image (see Assets). Earlier sections below document delivery history.
 
 ## Approved logo update
 
@@ -64,7 +64,7 @@ To connect actual submissions:
 - `src/brand/direction-*.svg`: 18 separate lockup/symbol files, comprising three directions × three color treatments × two asset types.
 - `src/brand/prompts.md`: three complete, independently copyable external image generation prompts.
 - `scripts/brand.mjs`: reproducible original geometry and comparison layout.
-- `src/favicon.svg`: separate temporary D letter favicon used by the website.
+- `src/favicon.png`: 128 px favicon, cropped from the approved symbol.
 
 The available tool `image_gen.imagegen` does not expose a verifiable model identity or model selector. “image 2.5” could not be confirmed; no image generator was called. In accordance with the requested fallback, the website uses a temporary typographic logo. The comparison studies are **original hand-authored SVG**, with genuine vector path symbols and editable text (Inter/Arial). There are no embedded bitmaps. Lettering is not yet outlined and can vary with the installed font; final optical refinement and outlining follow selection. Direction 02 is the suggested starting point for small-size clarity.
 
@@ -92,6 +92,29 @@ Verified against [NVIDIA HGX component documentation](https://docs.nvidia.com/en
 
 The website makes no claims about customers, partnerships, certifications, owned facilities, inventory, SLA, instant provisioning or current pricing.
 
+## Assets
+
+First load is about 97 KB. It used to be roughly 2.8 MB, because three things were shipped at the
+wrong size:
+
+| file | was | now | what changed |
+| --- | --- | --- | --- |
+| `favicon.svg` → `favicon.png` | 1,378 KB | 4 KB | the SVG was 182 bytes of markup wrapping a base64 copy of the entire logo bitmap, cropped by `viewBox` to show one 298×298 corner. Replaced with a 128 px PNG cropped from the same region. |
+| `assets/dataorb-cloud-final.png` | 1,034 KB | 8 KB | a 1254×1254 bitmap painted at 32 px and 158×15 px. The artwork came out of a generative pipeline, so its "white" was a noisy spread of #fdfdfd–#fefefe (2,711 distinct colours), which is what resisted compression. Downscaled to 512 px, near-white flattened to pure white, 64-colour palette. |
+| `fonts/inter-latin.woff2` | 344 KB | 69 KB | despite the name it was the complete Inter variable font: 2,937 glyphs including Greek, Cyrillic and Vietnamese, with a 446 KB `gvar` table. Subset to Latin, Latin Extended-A and the punctuation the site uses, with the `wght` axis limited to 400–600. The `opsz` axis is deliberately kept, because browsers apply `font-optical-sizing: auto` by default and pinning it would change how the hero renders. |
+
+512 px covers the largest painted size (200.6 px for `.brand-type img`) at 2.5× on desktop and 3× on
+mobile. The CSS sets explicit pixel dimensions on the image, so the crop maths is independent of the
+intrinsic size.
+
+Verified equivalent rather than assumed: with the original and optimized assets built and served from
+the same server, page height was 5734 px in both, every measured element box matched, and canvas text
+measurement differed by 0.02 px at weight 600 and not at all at weight 400.
+
+`brand-source/` holds the untouched originals — the 1254 px master and the full variable font. It is
+tracked but outside `src/`, so it is never copied into `dist/` and never deployed. Regenerate the
+display assets from it if the approved artwork ever changes.
+
 ## Consistency checks
 
 `npm run build` runs `scripts/check.mjs` first and fails the build on drift. It has no
@@ -107,7 +130,8 @@ dependencies and guards four couplings that fail silently in a browser:
    pair with `app.js` `matchMedia('(min-width: 1001px)')`, or an open menu fails to close on
    resize. Six nav links plus the CTA stop fitting below a ~1000px viewport.
 
-It also checks that every `href="#…"` has a matching `id`. Run it alone with `npm run check`.
+It also checks that every `href="#…"` has a matching `id`, and enforces an asset budget: no single
+shipped asset over 150 KB and no more than 220 KB in total. Run it alone with `npm run check`.
 Note `npm run dev` / `npm run preview` call `build.mjs` directly and skip the check; only
 `npm run build` (the deploy path) enforces it.
 

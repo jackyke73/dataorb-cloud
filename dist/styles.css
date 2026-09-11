@@ -2,7 +2,7 @@
   font-family: Inter;
   src: url('fonts/inter-latin.woff2') format('woff2');
   font-style: normal;
-  font-weight: 100 900;
+  font-weight: 400 600;   /* subset axis range; the site uses 400/500/600 only */
   font-display: swap;
 }
 

@@ -120,3 +120,22 @@ Not changed, recorded for you:
 - Pre-existing and outside this change: `favicon.svg` is 1,378 KB (an SVG wrapping a base64 1254x1254 PNG), `assets/dataorb-cloud-final.png` is 1,034 KB rendered at 32px and 158x15px, and `fonts/inter-latin.woff2` is 344 KB — roughly 2.7 MB of assets against 14.5 KB of gzipped code.
 
 The form backend remains unconnected and explicitly disclosed. No inventory, pricing, capacity, certification, partnership or SLA claims were added.
+
+## Asset weight — September 10, 2026
+Reduced first-load transfer from roughly 2.79 MB to 97 KB. The three oversized assets and what was actually wrong with each are documented in README under Assets.
+
+- `favicon.svg` (1,378 KB) was 182 bytes of SVG markup wrapping a base64 copy of the entire 1254x1254 logo bitmap, cropped by `viewBox` to display one 298x298 region. Replaced with `favicon.png`, a 128 px crop of the same region, 4 KB.
+- `assets/dataorb-cloud-final.png` (1,034 KB) was a 1254x1254 bitmap painted at 32 px and 158x15 px. Inspection showed 2,711 distinct colours at 640 px and a background of #fdfdfd to #fefefe rather than white, plus a 23 KB C2PA metadata chunk — generative-pipeline noise, which is what resisted compression. Downscaled to 512 px, near-white flattened, 64-colour palette: 8 KB.
+- `fonts/inter-latin.woff2` (344 KB) was the complete Inter variable font despite its name: 2,937 glyphs covering Greek, Cyrillic and Vietnamese, with a 446 KB `gvar` table. Subset to Latin, Latin Extended-A and the punctuation in use, `wght` limited to 400-600: 69 KB. The `opsz` axis was deliberately retained, because browsers apply `font-optical-sizing: auto` by default and pinning it would change hero rendering.
+
+Verified equivalent rather than assumed. Building both the original and optimized assets and serving them from the same server gave page height 5734 px in both, identical bounding boxes for the h1, lede, nav link, table header, logo symbol and wordmark, and canvas text measurement differing by 0.02 px at weight 600 and not at all at weight 400. An initial pixel diff suggested larger differences; that was a vertical alignment shift between screenshots, not a rendering change, confirmed by inspecting the crops directly. Maximum per-pixel difference of the downscaled logo at real display scale is 10-15 of 255, with 1 pixel in 18,225 differing by more than 8.
+
+Confirmed the site's computed font weights are only 400, 500 and 600, with no element above 600, before limiting the variable axis. All ten non-ASCII characters the site renders are present in the subset, along with full ASCII and 127 of 128 Latin Extended-A codepoints, so accented names typed into the form still render in Inter rather than a fallback.
+
+Two pre-existing problems found while doing this:
+- **`build.mjs` never purged `dist/`.** It copies `src/` over the top, so a file deleted or renamed in source lingered in the build output indefinitely. `dist/favicon.svg` was still tracked and still being served at 1,411,516 bytes from the live site after its source was removed. The build now removes `dist/` before each copy.
+- **Nineteen macOS "file 2" duplicates** had accumulated across `src/` and `dist/`, including a 1,034 KB `dataorb-cloud-final 2.png` and stale copies of `index.html`, `app.js` and `styles.css`. All were untracked and none had been deployed. Removed. The stale `src/index 2.html` predated the cluster and FAQ work, so a build could have shipped it had it ever been referenced.
+
+`scripts/check.mjs` now enforces an asset budget — 150 KB per shipped file, 220 KB total — negative-tested by padding the font past the limit and confirming the build fails.
+
+Re-ran the full regression after optimization: no console errors, Inter loads, logo and favicon load, cluster CTA reveals, draft correct, stale answers cleared on type change, FAQ opens with the correct marker, and no horizontal overflow.

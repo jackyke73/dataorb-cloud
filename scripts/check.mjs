@@ -1,7 +1,7 @@
 // Static consistency checks. No dependencies; runs before every build.
 // These guard couplings that are invisible at runtime: a drifted string here
 // fails silently in the browser, with no console error and no visual cue.
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir, stat } from 'node:fs/promises';
 
 const root = new URL('../', import.meta.url);
 const read = path => readFile(new URL(path, root), 'utf8');
@@ -64,6 +64,29 @@ const jsBp = Number(/matchMedia\('\(min-width: (\d+)px\)'\)/.exec(js)?.[1]);
 if (!cssBp) fail('could not find the .menu-toggle drawer breakpoint in styles.css');
 else if (!jsBp) fail('could not find the matchMedia breakpoint in app.js');
 else if (jsBp !== cssBp + 1) fail(`drawer breakpoint mismatch: styles.css max-width ${cssBp}px vs app.js min-width ${jsBp}px (expected ${cssBp + 1}px)`);
+
+// 5. Asset budget. The logo PNG, favicon and font were once 2.7 MB combined — a
+//    1254px bitmap painted at 32px, an SVG wrapping a base64 copy of it, and the
+//    full Inter variable font. Keep them from creeping back.
+const BUDGET_PER_FILE = 150 * 1024;
+const BUDGET_TOTAL = 220 * 1024;
+const assetDirs = ['src/assets', 'src/fonts'];
+let assetTotal = 0;
+for (const dir of assetDirs) {
+  let entries = [];
+  try { entries = await readdir(new URL(dir + '/', root)); } catch { continue; }
+  for (const name of entries) {
+    const { size } = await stat(new URL(`${dir}/${name}`, root));
+    assetTotal += size;
+    if (size > BUDGET_PER_FILE) fail(`${dir}/${name} is ${(size / 1024).toFixed(0)} KB, over the ${BUDGET_PER_FILE / 1024} KB per-file budget`);
+  }
+}
+try {
+  const { size } = await stat(new URL('src/favicon.png', root));
+  assetTotal += size;
+  if (size > BUDGET_PER_FILE) fail(`src/favicon.png is ${(size / 1024).toFixed(0)} KB, over budget`);
+} catch { fail('src/favicon.png is missing'); }
+if (assetTotal > BUDGET_TOTAL) fail(`shipped assets total ${(assetTotal / 1024).toFixed(0)} KB, over the ${BUDGET_TOTAL / 1024} KB budget`);
 
 if (errors.length) {
   console.error('Consistency check failed:');
