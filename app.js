@@ -37,6 +37,8 @@ function clearError(field){
 const project = $('#project');
 const conditionalFields = [...document.querySelectorAll('[data-when-project]')];
 let lastProject = project.value;
+let projectSynced = false;
+const projectNotice = $('#project-notice');
 function syncProjectFields(){
   const show = project.selectedOptions[0]?.hasAttribute('data-extended') ?? false;
   // Clear on any change of project type, not only on hide: switching between two
@@ -48,6 +50,12 @@ function syncProjectFields(){
     if(!show || changed) wrap.querySelectorAll('input, select, textarea')
       .forEach(field => { field.value=''; clearError(field); });
   });
+  // Announce only a user-driven reveal, and never on the initial sync. This region
+  // is separate from #form-status precisely so invalidateDraft() cannot clear it.
+  if(projectSynced && changed) projectNotice.textContent = show
+    ? 'Two optional questions were added below: hosting arrangement, and networking and storage requirements.'
+    : '';
+  projectSynced = true;
   lastProject = project.value;
 }
 syncProjectFields();
