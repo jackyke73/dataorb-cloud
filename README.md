@@ -1,6 +1,6 @@
 ## Current redesign
 
-The current website follows an enterprise infrastructure direction: a light, dense, table-led layout in white, steel and a single deep blue accent, with no photography. It has a dark utility bar, a compact sticky header, a typographic hero paired with an "engagement at a glance" specification panel, a dark capability band, a sortable-width NVIDIA GPU reference table (stacking to labelled rows under 760 px), a three-column services block, a four-column process table, an explicit scope-and-limitations block and a grouped quote form. Navigation and footer use a compact horizontal arrangement of the original PNG symbol and wordmark via CSS display crops; the footer places the unmodified logo on a white plate rather than recoloring it. The original file is unchanged. Earlier sections below document delivery history.
+The current website follows an enterprise infrastructure direction: a light, dense, table-led layout in white, steel and a single deep blue accent, with no photography. It has a dark utility bar, a compact sticky header, a typographic hero paired with an "engagement at a glance" specification panel, a dark capability band, an NVIDIA GPU reference table (stacking to labelled rows under 760 px), a three-column services block, a dedicated GPU cluster block, a four-column process table, an explicit scope-and-limitations block, a disclosure-based FAQ and a grouped quote form. Navigation and footer use a compact horizontal arrangement of the original PNG symbol and wordmark via CSS display crops; the footer places the unmodified logo on a white plate rather than recoloring it. The original file is unchanged. Earlier sections below document delivery history.
 
 ## Approved logo update
 
@@ -41,10 +41,19 @@ Edit `site.config.mjs`, then rebuild. It controls the short and legal company na
 
 Validation covers required trimmed values, email syntax, positive integer quantities up to 100,000, past dates and text length. Open questions can use “Help me choose”, “To be determined”, a flexible region, and optional quantity/date fields. Selecting a GPU in the catalog fills the preference automatically. Editing any field invalidates a previously prepared draft.
 
+An optional **Project type** field leads the compute-requirements group. Selecting *Dedicated GPU cluster*
+or *Infrastructure planning & consulting* reveals two further optional fields, **Hosting arrangement** and
+**Networking & storage requirements**; the short sourcing path is unchanged. The "Discuss Your Cluster"
+call to action in the cluster block sets the project type and reveals those fields.
+
+Conditional fields sit inside a `[hidden]` wrapper, and both validation and the generated request use only
+fields that are currently visible. A hidden answer is therefore never submitted or printed into a draft,
+but it is retained in the DOM so switching project type back does not discard what was typed.
+
 To connect actual submissions:
 
 1. Implement a secure HTTPS endpoint and set `quoteEndpoint` and `privacyUrl`. Both are required to enable sending.
-2. The endpoint accepts JSON keys: `name`, `email`, `company`, `gpu`, `quantity`, `region`, `start`, `term`, `use`, `notes`. Quantities and dates are strings; optional values may be empty.
+2. The endpoint accepts JSON keys: `name`, `email`, `company`, `project`, `gpu`, `quantity`, `region`, `start`, `term`, `use`, `notes`, plus `hosting` and `networking` when the cluster or planning path is selected. Quantities and dates are strings; optional values may be empty. Because hidden fields are excluded, `hosting` and `networking` are absent from the payload rather than empty on the short path.
 3. Validate all fields again on the server. Apply origin/CORS restrictions, spam/rate controls and appropriate data handling. Keep provider credentials server-side.
 4. Return a successful HTTP status with `{ "accepted": true }` **only after durably recording or delivering the inquiry**. The frontend reports unconfirmed receipt for any other result or a 15-second timeout and retains the user's input. A timeout can occur after the server accepted a request; handle duplicate delivery on the server.
 5. Test receipt end to end with the real mailbox/CRM before public launch. No live endpoint behavior has been verified in this delivery.
@@ -82,6 +91,25 @@ GPU memory is labeled by configuration and per GPU:
 Verified against [NVIDIA HGX component documentation](https://docs.nvidia.com/enterprise-reference-architectures/hgx-ai-factory-h100-h200-b200/latest/components.html) and the [NVIDIA DGX B300 user guide](https://docs.nvidia.com/dgx/dgxb300-user-guide/introduction-to-dgxb300.html). H100 NVL and other hardware variants differ. Workload descriptions are qualitative starting points, not performance guarantees. Sources are also linked directly in the GPU section.
 
 The website makes no claims about customers, partnerships, certifications, owned facilities, inventory, SLA, instant provisioning or current pricing.
+
+## Consistency checks
+
+`npm run build` runs `scripts/check.mjs` first and fails the build on drift. It has no
+dependencies and guards four couplings that fail silently in a browser:
+
+1. Every `data-project` value resolves to a real `<option>` in `#project`, and that option
+   carries `data-extended` (otherwise the CTA reveals nothing, or blanks the select).
+2. At least one `<option data-extended>` exists, and `app.js` does not reintroduce a
+   hard-coded list of label strings.
+3. Draft `labels` keys and form field `name` attributes match in both directions — a missing
+   key prints `undefined: <value>` into a customer-facing draft.
+4. The mobile drawer breakpoint agrees across files: `styles.css` `max-width: 1000px` must
+   pair with `app.js` `matchMedia('(min-width: 1001px)')`, or an open menu fails to close on
+   resize. Six nav links plus the CTA stop fitting below a ~1000px viewport.
+
+It also checks that every `href="#…"` has a matching `id`. Run it alone with `npm run check`.
+Note `npm run dev` / `npm run preview` call `build.mjs` directly and skip the check; only
+`npm run build` (the deploy path) enforces it.
 
 ## Deployment
 

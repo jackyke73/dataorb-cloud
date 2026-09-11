@@ -67,3 +67,56 @@ The form backend remains unconnected and explicitly disclosed. This redesign doe
 - Built successfully with the existing static build; no added dependencies and no changes to form logic, endpoints or service claims.
 
 The form backend remains unconnected and explicitly disclosed. This redesign does not change inventory, pricing, delivery or service claims. Native-device and formal accessibility audits remain outside these checks.
+
+## Dedicated cluster planning, expanded inquiry form and FAQ — September 10, 2026
+- Added a dedicated GPU cluster block between services and "How we work", with three supporting items, a closing note that equipment, availability, commercial terms and delivery schedules are confirmed with the selected providers, and a "Discuss Your Cluster" call to action.
+- Added a six-question FAQ before the inquiry section using native `details`/`summary` disclosures.
+- Added "Clusters" and "FAQ" to the primary navigation and footer. An earlier pass dropped "Scope" from the navigation to make room; it was restored, and navigation spacing was tightened for the 800–1100 px range instead.
+- Expanded the inquiry form with an optional Project type select, an optional Hosting arrangement select and an optional Networking & storage textarea. The existing quantity field was relabelled "Estimated number of GPUs" with helper text rather than duplicated.
+- Verified in the browser that the cluster call to action sets Project type to "Dedicated GPU cluster" and reveals the conditional fields, and that selecting a non-cluster project type hides them again.
+- Verified hidden fields neither block validation nor reach a request: with hosting and networking answered and the project then switched to "GPU compute sourcing", the prepared draft contained neither value, while the required-field path still validated and prepared successfully.
+- Verified switching back to the cluster path restores the previously typed hosting and networking values and that they then appear in the draft, labelled "Hosting arrangement" and "Networking & storage requirements".
+- Verified the draft still carries NOT SUBMITTED, the status line still reads "Your draft is ready below. Online submission is not connected; nothing has been sent.", and the action remains "Prepare request". No success or delivery claim is shown.
+- Verified editing a field after preparing a request hides the stale draft.
+- Verified the quantity field keeps its helper text associated across an error appearing and clearing: `aria-describedby` reads `quantity-hint quantity-error` while invalid and `quantity-hint` once corrected. Previously `validate()` overwrote the association, which would have dropped the hint from assistive technology.
+- Verified FAQ disclosures are keyboard focusable and open and close; all six render.
+- Measured document scrollWidth against clientWidth at 500, 640, 768, 820, 900, 1024, 1280, 1440 and 1920 px: no horizontal overflow. Header fit was measured separately at 810, 860, 920, 1000, 1100 and 1440 px with no wordmark/navigation collision.
+- Previewed desktop at 1440 px and narrow layout at 500 px: cluster block, FAQ closed and open states, and the form with conditional fields revealed.
+- `[hidden]` is now enforced with `display: none !important` because `.field` sets `display: flex`, which would otherwise defeat the attribute.
+- Built successfully with the existing static build; no new dependencies.
+
+No GPU ownership, data center operation, inventory, capacity, pricing, performance, certification, partnership or SLA claims were added. Contact details, form delivery and the privacy notice remain unconfigured and are still disclosed as such.
+
+## Pre-landing review — September 10, 2026
+Reviewed the uncommitted cluster/FAQ/form work against HEAD with a checklist pass plus five parallel specialist reviews (testing, maintainability, design/accessibility, performance, adversarial). `dist/` is generated and was excluded; the effective source diff was ~130 lines.
+
+Clean on the critical pass, verified rather than assumed:
+- No XSS sinks. Every DOM write uses `textContent`, `replaceChildren` or `createTextNode`; no `innerHTML`, `eval` or `new Function`.
+- Enum completeness: all five `#project` values drive the reveal correctly, including the entity-encoded "Infrastructure planning &amp; consulting".
+- Positioning: a scan of visible page text found no prohibited claim. The only regex hits were the disclaimers "not guaranteed here" and "We do not promise immediate activation".
+- Draft `labels` keys and form field names match 13/13, so no field can render as `undefined:`.
+- `dist/` is in sync with `src/`; a rebuild is a no-op.
+
+Two earlier verifications in this file were wrong and are corrected here:
+- "No horizontal overflow / no navigation collision" was measured with a viewport of 795px for an 810px window, so the mobile drawer had already engaged and the desktop navigation was never exercised in the band that broke.
+- "Stale values excluded" was tested only for cluster to sourcing, where the fields hide. It was never tested for cluster to planning, where both fields stay visible and carried their previous answers into the request.
+
+Fixed during review:
+- **Navigation wrapped between roughly 801px and 975px.** Six links plus the CTA need a ~1000px viewport; the drawer only took over at 800px, so iPad portrait widths (810, 820, 834) showed a two-line 54px header. The drawer breakpoint moved to 1000px, `app.js` matchMedia to 1001px, the compensating gap and font-size shrink (which also produced 21px tap targets) was removed, and `#primary-nav a` now uses `white-space: nowrap` so future overflow fails visibly. Verified single-line and overflow-free at 375, 500, 700, 815, 875, 915, 975, 1000, 1010, 1015, 1020, 1035, 1060, 1100, 1280, 1440, 1920 and 2560px.
+- **Stale conditional answers crossed between project types.** Hiding only suppressed values; switching between two revealing types kept them on screen and serialised them under the new type. Conditional fields are now cleared on any change of project type, not only on hide. Verified for both transitions.
+- **The form failed open.** The fieldset was enabled 60 lines before the submit handler was attached, on a `<form>` with no `action`, so any early throw turned "Prepare request" into a native GET carrying name, email, company and notes into the URL and server logs, then reloaded to a blank form that reads as success. The fieldset is now enabled only after every handler is wired, and an error listener registered on the first line re-disables it and shows "This form is unavailable in this browser. Nothing has been sent." Verified by injecting a throw mid-module.
+- **Delivery outcomes were erased by ordinary interaction.** Status messages now carry a kind; `invalidateDraft` clears draft-state messages only, so a failed-send message cannot be wiped into a blank status that reads as success.
+- **Cross-talk during an in-flight submit.** The cluster CTA and GPU links are ignored while a request is sending, so a success message cannot describe a state that was never transmitted.
+- **Required fields could be skipped.** `activeFields()` excluded anything inside `[hidden]` with no `required` guard. It now never excludes a required field.
+- **Reveal desynced from value.** `pageshow` now re-syncs, so bfcache restore, session restore and autofill cannot leave the value and the revealed fields disagreeing.
+- **Three copies of the same strings.** The reveal is now driven by `<option data-extended>` in the markup rather than a hard-coded array, the CTA resolves its target against the option list instead of blind-assigning, and `scripts/check.mjs` enforces the rest at build time.
+- **Accessibility and CSS.** The FAQ marker moved from CSS generated content to an `aria-hidden` span, so screen readers no longer announce "plus" on every row, and it no longer depends on the `content` alt-text syntax that Safari only supports from 17.4. Its colour moved from `var(--muted)` (4.30:1 on the hover surface, under AA) to `var(--body)` (7.61:1). The global `[hidden] { display: none !important }` was scoped to `.field[hidden]`, which wins on specificity alone. `.faq-answer p` narrowed from 86ch to 74ch. A shared `clearError` helper keeps `validate()` and `syncProjectFields()` from drifting, and a missing draft label now falls back to the field name instead of printing `undefined`.
+
+Not changed, recorded for you:
+- "Discuss Your Cluster" is the only Title Case control on a site that is otherwise sentence case, but it is verbatim from the brief, so it was left alone.
+- `.faq-item summary { display: flex }` overrides the native `display: list-item`; Safari/VoiceOver is known to drop the disclosure mapping when that happens. Keyboard operation and focus visibility are unaffected.
+- The conditional fields appear six fields below the control that reveals them, and nothing announces the change through the existing `role="status"` region.
+- `#clusters` reuses `.service-grid` directly below `#services`, so two visually identical three-up grids sit next to each other.
+- Pre-existing and outside this change: `favicon.svg` is 1,378 KB (an SVG wrapping a base64 1254x1254 PNG), `assets/dataorb-cloud-final.png` is 1,034 KB rendered at 32px and 158x15px, and `fonts/inter-latin.woff2` is 344 KB — roughly 2.7 MB of assets against 14.5 KB of gzipped code.
+
+The form backend remains unconnected and explicitly disclosed. No inventory, pricing, capacity, certification, partnership or SLA claims were added.

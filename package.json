@@ -1,5 +1,15 @@
 {
-  "name": "dataorb-cloud", "version": "1.0.0", "private": true, "type": "module",
-  "scripts": {"build": "node scripts/build.mjs", "dev": "node scripts/serve.mjs", "preview": "node scripts/serve.mjs"},
-  "engines": {"node": ">=20"}
+  "name": "dataorb-cloud",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/check.mjs && node scripts/build.mjs",
+    "dev": "node scripts/serve.mjs",
+    "preview": "node scripts/serve.mjs",
+    "check": "node scripts/check.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
 }

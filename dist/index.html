@@ -24,7 +24,7 @@
     <a class="wordmark" href="#main" aria-label="Dataorb Cloud home"><span class="brand-symbol" aria-hidden="true"><img src="assets/dataorb-cloud-final.png" alt="" width="1254" height="1254"></span><span class="brand-type" aria-hidden="true"><img src="assets/dataorb-cloud-final.png" alt="" width="1254" height="1254"></span></a>
     <button class="menu-toggle" aria-expanded="false" aria-controls="primary-nav">Menu <span aria-hidden="true">+</span></button>
     <nav id="primary-nav" aria-label="Main navigation">
-      <a href="#gpu-options">GPU reference</a><a href="#services">Services</a><a href="#how-it-works">How we work</a><a href="#scope">Scope</a>
+      <a href="#gpu-options">GPU reference</a><a href="#services">Services</a><a href="#clusters">Clusters</a><a href="#how-it-works">How we work</a><a href="#scope">Scope</a><a href="#faq">FAQ</a>
       <a class="button button-accent button-small" href="#quote">Request a quote</a>
     </nav>
   </div>
@@ -187,6 +187,27 @@
     </div>
   </section>
 
+  <section class="section section-divided" id="clusters">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="label">Dedicated GPU clusters</p>
+          <h2>Planning beyond a single server?</h2>
+        </div>
+        <p class="section-note">We help translate workload requirements into a coordinated infrastructure plan—from GPU configurations and networking to storage, hosting requirements and deployment handoff.</p>
+      </div>
+      <div class="service-grid">
+        <article class="service"><h3>GPU configuration</h3><p>Define GPU preferences, node counts and workload requirements with your team and prospective suppliers.</p></article>
+        <article class="service"><h3>Networking &amp; storage</h3><p>Clarify interconnect, dataset and checkpointing requirements so providers can propose suitable configurations.</p></article>
+        <article class="service"><h3>Hosting &amp; deployment</h3><p>Coordinate discussions around location, power, cooling, access and delivery responsibilities with the selected providers.</p></article>
+      </div>
+      <div class="cluster-foot">
+        <p>Equipment, availability, commercial terms and delivery schedules are confirmed with the selected providers during quoting.</p>
+        <a class="button button-accent" href="#quote" data-project="Dedicated GPU cluster">Discuss Your Cluster</a>
+      </div>
+    </div>
+  </section>
+
   <section class="section" id="how-it-works">
     <div class="container">
       <div class="section-head">
@@ -267,6 +288,25 @@
     </div>
   </section>
 
+  <section class="section section-divided" id="faq">
+    <div class="container">
+      <div class="section-head section-head-solo">
+        <div>
+          <p class="label">FAQ</p>
+          <h2>Before we get started</h2>
+        </div>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item"><summary><span>What does Dataorb Cloud do?</span><span class="faq-mark" aria-hidden="true"></span></summary><div class="faq-answer"><p>We help customers define GPU compute requirements, compare supplier options and coordinate deployment. Our role and the selected provider’s responsibilities are clarified during the quotation process.</p></div></details>
+        <details class="faq-item"><summary><span>Do you own the GPUs or operate the data center?</span><span class="faq-mark" aria-hidden="true"></span></summary><div class="faq-answer"><p>Our current services focus on sourcing and coordination with third-party providers. Each proposal identifies the supplier and clarifies who provides the hardware, hosting and operational support.</p></div></details>
+        <details class="faq-item"><summary><span>Can you help plan a dedicated GPU cluster?</span><span class="faq-mark" aria-hidden="true"></span></summary><div class="faq-answer"><p>Yes. We can help organize requirements for GPU configuration, networking, storage and hosting, and coordinate discussions with prospective providers. Detailed engineering and delivery scope are agreed for each project.</p></div></details>
+        <details class="faq-item"><summary><span>How are pricing and availability confirmed?</span><span class="faq-mark" aria-hidden="true"></span></summary><div class="faq-answer"><p>Pricing and availability depend on the configuration, location, rental term and supplier. They are confirmed during quoting; GPU options shown on this website are reference configurations, not a live inventory listing.</p></div></details>
+        <details class="faq-item"><summary><span>How long does deployment take?</span><span class="faq-mark" aria-hidden="true"></span></summary><div class="faq-answer"><p>Timing depends on supplier availability, configuration, hosting readiness and project scope. The delivery schedule is agreed with the selected provider during quoting. We do not promise immediate activation.</p></div></details>
+        <details class="faq-item"><summary><span>Who provides ongoing support?</span><span class="faq-mark" aria-hidden="true"></span></summary><div class="faq-answer"><p>Support responsibilities, coverage hours, escalation contacts and any service commitments are defined in the proposal and the relevant provider agreements.</p></div></details>
+      </div>
+    </div>
+  </section>
+
   <section class="section quote-section" id="quote">
     <div class="container quote-grid">
       <div class="quote-copy">
@@ -293,12 +333,16 @@
               <div class="field field-full"><label for="company">Company / institution *</label><input id="company" name="company" autocomplete="organization" required maxlength="160" placeholder="Organization name"><small class="error" id="company-error"></small></div>
 
               <div class="form-group-label">02 — Compute requirements</div>
+              <div class="field field-full"><label for="project">Project type <span>(optional)</span></label><select id="project" name="project"><option value="">Select a project type</option><option>GPU compute sourcing</option><option data-extended>Dedicated GPU cluster</option><option data-extended>Infrastructure planning &amp; consulting</option><option>Help me decide</option></select><small class="error" id="project-error"></small></div>
               <div class="field"><label for="gpu">GPU preference *</label><select id="gpu" name="gpu" required><option value="">Select a GPU</option><option>H100</option><option>H200</option><option>B200</option><option>B300</option><option>Multiple GPU types</option><option>Help me choose</option></select><small class="error" id="gpu-error"></small></div>
-              <div class="field"><label for="quantity">Number of GPUs <span>(optional)</span></label><input id="quantity" name="quantity" type="number" inputmode="numeric" min="1" max="100000" step="1" placeholder="e.g. 8"><small class="error" id="quantity-error"></small></div>
+              <div class="field"><label for="quantity">Estimated number of GPUs <span>(optional)</span></label><input id="quantity" name="quantity" type="number" inputmode="numeric" min="1" max="100000" step="1" placeholder="e.g. 8" aria-describedby="quantity-hint"><small class="hint" id="quantity-hint">An estimate is fine. Leave blank if you need help sizing the deployment.</small><small class="error" id="quantity-error"></small></div>
               <div class="field"><label for="region">Preferred region *</label><input id="region" name="region" required maxlength="160" placeholder="Country / region, or flexible"><small class="error" id="region-error"></small></div>
               <div class="field"><label for="start">Preferred start date <span>(optional)</span></label><input id="start" name="start" type="date"><small class="error" id="start-error"></small></div>
               <div class="field"><label for="term">Rental term *</label><select id="term" name="term" required><option value="">Select a term</option><option>Less than 1 month</option><option>1–3 months</option><option>3–6 months</option><option>6–12 months</option><option>12+ months</option><option>To be determined</option></select><small class="error" id="term-error"></small></div>
               <div class="field"><label for="use">Primary use *</label><select id="use" name="use" required><option value="">Select a workload</option><option>Model training</option><option>Fine-tuning</option><option>Inference</option><option>Research / HPC</option><option>Mixed workloads</option><option>Other / exploring</option></select><small class="error" id="use-error"></small></div>
+
+              <div class="field" data-when-project hidden><label for="hosting">Hosting arrangement <span>(optional)</span></label><select id="hosting" name="hosting"><option value="">Select an arrangement</option><option>Need help finding a hosting provider</option><option>Have an existing hosting location</option><option>Prefer supplier-hosted compute</option><option>Not decided</option></select><small class="error" id="hosting-error"></small></div>
+              <div class="field field-full" data-when-project hidden><label for="networking">Networking &amp; storage requirements <span>(optional)</span></label><textarea id="networking" name="networking" rows="3" maxlength="2000" placeholder="For example: distributed training, interconnect preferences, dataset size, checkpoint storage, or “Help me decide.”"></textarea><small class="error" id="networking-error"></small></div>
 
               <div class="form-group-label">03 — Context</div>
               <div class="field field-full"><label for="notes">Additional details <span>(optional)</span></label><textarea id="notes" name="notes" rows="4" maxlength="4000" placeholder="Model size, networking, storage, budget, or questions…"></textarea><small class="error" id="notes-error"></small></div>
@@ -339,12 +383,14 @@
         <a href="#services">GPU sourcing</a>
         <a href="#services">Deployment support</a>
         <a href="#services">Infrastructure consulting</a>
+        <a href="#clusters">Dedicated GPU clusters</a>
         <a href="#how-it-works">How we work</a>
       </nav>
       <nav class="footer-col" aria-label="Engagement">
         <h2>Engagement</h2>
         <a href="#quote">Request a quote</a>
         <a href="#scope">Scope and limitations</a>
+        <a href="#faq">Frequently asked questions</a>
         <a href="#gpu-options">Specifications and sources</a>
       </nav>
     </div>
