@@ -27,7 +27,7 @@ if(config.email || config.phone || config.address){
 }
 if(endpointReady){
   $('#connection-notice').textContent='Share your requirements for review. Availability, pricing and delivery timing are confirmed during quoting.';
-  button.replaceChildren(document.createTextNode('Send quote request ↗'));
+  button.replaceChildren(document.createTextNode('Send quote request'));
   const privacy = $('#privacy-note');privacy.replaceChildren(document.createTextNode('By sending, you ask us to contact you about this request. Please review our '));
   const a=document.createElement('a');a.href=config.privacyUrl;a.textContent='privacy notice';a.style.textDecoration='underline';privacy.append(a,document.createTextNode('. Please do not include passwords or confidential datasets.'));
 }
@@ -62,7 +62,7 @@ form.addEventListener('submit',async event=>{
     if(!response.ok || result.accepted!==true)throw new Error('Receipt not confirmed');
     status.textContent='Your request has been received for review. This does not reserve GPUs or confirm availability.';
   }catch{status.textContent='We could not confirm receipt. Your entries are still here. Please try again later or contact us directly.';}
-  finally{$('#quote-fields').disabled=false;form.removeAttribute('aria-busy');button.textContent='Send quote request ↗';status.focus();}
+  finally{$('#quote-fields').disabled=false;form.removeAttribute('aria-busy');button.textContent='Send quote request';status.focus();}
 });
 $('#download-request').addEventListener('click',()=>{
   if(!draft)return;
