@@ -83,6 +83,31 @@ Verified against [NVIDIA HGX component documentation](https://docs.nvidia.com/en
 
 The website makes no claims about customers, partnerships, certifications, owned facilities, inventory, SLA, instant provisioning or current pricing.
 
+## Deployment
+
+Hosted on GitHub Pages at <https://jackyke73.github.io/dataorb-cloud/>, served from the `gh-pages`
+branch root. `main` holds the source; `gh-pages` holds the contents of `dist/`.
+
+To redeploy after changing anything in `src/` or `site.config.mjs`:
+
+```sh
+npm run build
+git add -A && git commit -m "..."
+git push origin main
+git subtree push --prefix dist origin gh-pages
+```
+
+Notes:
+
+- Asset URLs are document-relative, so the build works both under the Pages subpath and at a domain
+  root. Do not reintroduce root-relative `/styles.css` style paths: they 404 under `/dataorb-cloud/`.
+- `src/.nojekyll` is copied into `dist/` and stops GitHub Pages running Jekyll over the output.
+- The site is currently unindexed. `robots.txt` serves `Disallow: /` and every page carries
+  `noindex,nofollow`, because `allowIndexing` is `false` and `siteUrl` is empty.
+- `dist/brand/` is published too. It is unlinked and unindexed, but it is publicly reachable.
+- A first push over HTTPS may fail with `RPC failed; HTTP 400`. Raising `http.postBuffer` and
+  forcing HTTP/1.1 resolves it; both are already set in this clone's git config.
+
 ## Before public launch
 
 1. Confirm the preferred logo direction.
